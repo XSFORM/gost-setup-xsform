@@ -1,0 +1,7 @@
+*.tar.gz
+*.bak
+*.backup
+*.swp
+*.tmp
+*.log
+/var/backups/gost-xsform/
