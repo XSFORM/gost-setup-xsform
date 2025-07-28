@@ -1,7 +1,7 @@
 # gost-setup-mod
 
 Скрипт для автоматической установки, настройки и управления сервисом [gost](https://github.com/ginuerzh/gost) с дружественным меню и цветным интерфейсом.  
-Модификация от SDEV51.
+Модификация от XSFORM.
 
 ## Возможности
 
@@ -18,7 +18,7 @@
 Скачайте скрипт и дайте права на выполнение:
 
 ```bash
-wget https://raw.githubusercontent.com/SDEV51/gost-setup-mod/main/gost-setup-mod.sh
+wget https://raw.githubusercontent.com/XSFORM/gost-setup-mod/main/gost-setup-mod.sh
 chmod +x gost-setup-mod.sh
 ```
 
@@ -37,5 +37,5 @@ sudo ./gost-setup-mod.sh
 
 ## Обратная связь
 
-Автор: [SDEV51](https://t.me/SDEV51)  
-Telegram-канал: https://t.me/SDEV51
+Автор: [XSFORM](https://t.me/XSFORM)  
+Telegram-канал: https://t.me/XSFORM

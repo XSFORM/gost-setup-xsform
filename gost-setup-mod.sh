@@ -10,11 +10,11 @@ NC='\033[0m' # No Color
 
 GOST_BIN="/usr/local/bin/gost"
 GOST_SERVICE="/usr/lib/systemd/system/gost.service"
-BACKUP_DIR="/var/backups/gost-sdev51"
-TMP_DIR="/tmp/gost-sdev51"
+BACKUP_DIR="/var/backups/gost-xsform"
+TMP_DIR="/tmp/gost-xsform"
 REPO="ginuerzh/gost"
 
-logo_sdev51() {
+logo_xsform() {
 cat <<'EOF'
 
  ░▒▓██████▓▒░ ░▒▓██████▓▒░ ░▒▓███████▓▒░▒▓████████▓▒░
@@ -24,7 +24,7 @@ cat <<'EOF'
 ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░  ░▒▓█▓▒░
 ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░  ░▒▓█▓▒░
  ░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓███████▓▒░   ░▒▓█▓▒░
-        mod от SDEV51  |  Telegram: @SDEV51
+        mod от XSFORM  |  Telegram: @XSFORM
 ====================================================
 EOF
 }
@@ -126,7 +126,7 @@ configure_gost_service() {
 
   sudo tee "$GOST_SERVICE" >/dev/null <<EOF
 [Unit]
-Description=GO Simple Tunnel (mod от SDEV51)
+Description=GO Simple Tunnel (mod от XSFORM)
 After=network.target
 Wants=network.target
 
@@ -451,7 +451,7 @@ delete_gost() {
 main_menu() {
   while true; do
     clear
-    logo_sdev51
+    logo_xsform
     show_menu
     read -rp "Ваш выбор: " choice
     case "$choice" in
@@ -473,7 +473,7 @@ main_menu() {
      13) delete_backup ;;
      14) reinstall_gost ;;
      15) delete_gost ;;
-      0) echo -e "${GREEN}Выход. Спасибо, что используете SDEV51 mod!${NC}"; exit 0 ;;
+      0) echo -e "${GREEN}Выход. Спасибо, что используете XSFORM mod!${NC}"; exit 0 ;;
       *) echo -e "${YELLOW}Некорректный выбор${NC}"; pause ;;
     esac
   done
