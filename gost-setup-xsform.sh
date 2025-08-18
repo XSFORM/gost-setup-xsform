@@ -47,13 +47,14 @@ show_menu() {
   echo -e "${GREEN}13${NC}. Удалить бэкап"
   echo -e "${GREEN}14${NC}. Переустановить Gost (самая свежая версия)"
   echo -e "${GREEN}15${NC}. Удалить Gost (бинари и systemd unit)"
+  echo -e "${GREEN}16${NC}. Ускорить TCP/UDP (sysctl)"
   echo -e " ${GREEN}0${NC}. Выйти"
 }
 
 pause() { read -rp "$(echo -e "${YELLOW}Нажмите Enter для продолжения...${NC}")"; }
 
 check_requirements() {
-  for pkg in wget curl jq tar gzip nano; do
+  for pkg in wget curl jq tar gzip nano iproute2; do
     if ! command -v "$pkg" &>/dev/null; then
       echo -e "${YELLOW}Устанавливаю $pkg...${NC}"
       sudo apt update && sudo apt install -y "$pkg"
@@ -448,6 +449,77 @@ delete_gost() {
   pause
 }
 
+# =========================
+#  Ускоритель TCP/UDP (IPv4)
+# =========================
+optimize_tcp_udp() {
+  echo -e "${YELLOW}Устанавливаю системные твики для TCP/UDP (IPv4 only)…${NC}"
+
+  local CONF="/etc/sysctl.d/98-vpn-proxy.conf"
+  local BAKDIR="/etc/sysctl.d/.backups"
+  local stamp; stamp() { date +%F-%H%M%S; }
+
+  # Требуем root
+  if [[ $EUID -ne 0 ]]; then
+    echo -e "${RED}Запусти от root: sudo $0${NC}"
+    pause
+    return 1
+  fi
+
+  # Бэкап предыдущего файла (если был)
+  sudo mkdir -p "$BAKDIR"
+  if [[ -f "$CONF" ]]; then
+    sudo cp -a "$CONF" "$BAKDIR/$(basename "$CONF").$(stamp).bak"
+    echo -e "${GREEN}Бэкап создан: $BAKDIR/$(basename "$CONF").$(stamp).bak${NC}"
+  fi
+
+  # IPv4 only, включаем UDP+TCP твики сразу (поставил и забыл)
+  sudo tee "$CONF" >/dev/null <<'EOF'
+# --- VPN Proxy Optimizer (GOST) — IPv4 only, UDP+TCP ---
+# Включаем форвардинг (на случай DNAT/маршрутизации через хост)
+net.ipv4.ip_forward = 1
+
+# Лёгкий планировщик очередей — меньше джиттер/задержка
+net.core.default_qdisc = fq
+
+# Общие лимиты буферов (полезно и TCP, и UDP)
+net.core.rmem_max = 2500000
+net.core.wmem_max = 2500000
+net.core.optmem_max = 25165824
+net.core.netdev_max_backlog = 5000
+
+# UDP: держим подключения дольше, меньше ложных обрывов через NAT
+net.netfilter.nf_conntrack_udp_timeout = 60
+net.netfilter.nf_conntrack_udp_timeout_stream = 180
+
+# TCP: быстрее качает на «шумных» каналах
+net.ipv4.tcp_congestion_control = bbr
+net.ipv4.tcp_fastopen = 3
+net.ipv4.tcp_low_latency = 1
+EOF
+
+  # Применяем параметры ядра
+  sudo modprobe nf_conntrack 2>/dev/null || true
+  sudo sysctl --system >/dev/null || true
+
+  # Ставим fq на активные интерфейсы сразу (без ребута)
+  mapfile -t ifs < <(ip -o link show | awk -F': ' '/UP/ {print $2}' | grep -v '^lo$' || true)
+  for i in "${ifs[@]}"; do
+    sudo tc qdisc replace dev "$i" root fq 2>/dev/null || true
+  done
+
+  echo
+  echo -e "${GREEN}[OK] Ускорение TCP/UDP применено: $CONF${NC}"
+  sudo sysctl net.ipv4.ip_forward \
+              net.core.default_qdisc \
+              net.core.rmem_max net.core.wmem_max \
+              net.netfilter.nf_conntrack_udp_timeout \
+              net.ipv4.tcp_congestion_control net.ipv4.tcp_fastopen \
+              net.ipv4.tcp_low_latency 2>/dev/null || true
+  echo
+  pause
+}
+
 main_menu() {
   while true; do
     clear
@@ -473,6 +545,7 @@ main_menu() {
      13) delete_backup ;;
      14) reinstall_gost ;;
      15) delete_gost ;;
+	 16) optimize_tcp_udp ;;
       0) echo -e "${GREEN}Выход. Спасибо, что используете XSFORM mod!${NC}"; exit 0 ;;
       *) echo -e "${YELLOW}Некорректный выбор${NC}"; pause ;;
     esac
