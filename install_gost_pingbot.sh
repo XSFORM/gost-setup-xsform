@@ -9,7 +9,7 @@ chmod +x /root/gost-setup-xsform.sh
 # === 2. Качаем бот для мониторинга (ping_check_bot) ===
 echo -e "\033[33mСкачиваю файлы бота ping_check_bot...\033[0m"
 mkdir -p /root/ping_check_bot
-wget -qO- https://github.com/XSFORM/gost-setup-xsform/archive/main.tar.gz | tar -xz --strip=2 -C /root/ping_check_bot gost-setup-xsform/main/ping_check_bot
+wget -qO- https://github.com/XSFORM/gost-setup-xsform/archive/main.tar.gz | tar -xz --strip=2 -C /root/ping_check_bot gost-setup-xsform-main/ping_check_bot
 
 # === 3. Запрашиваем Telegram BOT TOKEN и CHAT ID ===
 echo -e "\033[32mВведите Telegram BOT TOKEN (например, 123456:ABC...):\033[0m"
