@@ -1,41 +1,7 @@
-# gost-setup-xsform
+### Мониторинг TM IP и Telegram
 
-Скрипт для автоматической установки, настройки и управления сервисом [gost](https://github.com/ginuerzh/gost) с дружественным меню и цветным интерфейсом.  
-Модификация от XSFORM.
-
-## Возможности
-
-- Установка и обновление последней версии gost
-- Создание и редактирование конфигурации с помощью меню
-- Добавление дополнительных серверов (правил)
-- Проверка доступности серверов (ping), быстрая замена IP
-- Управление сервисом (старт, стоп, рестарт, статус, лог)
-- Создание и восстановление бэкапов конфигурации
-- Переустановка и удаление gost
-
-## Установка
-
-Скачайте скрипт и дайте права на выполнение:
-
+Скачайте и запустите установщик:
 ```bash
-wget https://raw.githubusercontent.com/XSFORM/gost-setup-xsform/main/gost-setup-xsform.sh
-chmod +x gost-setup-xsform.sh
-```
-
-## Запуск
-
-```bash
-sudo ./gost-setup-xsform.sh
-```
-
-> ⚠️ Скрипт тестировался на Ubuntu/Debian.  
-> Для работы нужен root-доступ (sudo) для установки пакетов и управления сервисами.
-
-## Скриншоты
-
-(Добавьте свои скриншоты, если хотите)
-
-## Обратная связь
-
-Автор: [XSFORM](https://t.me/XSFORM)  
-Telegram-канал: https://t.me/XSFORM
+wget https://raw.githubusercontent.com/XSFORM/gost-setup-xsform/main/gost-monitor-setup.sh
+chmod +x gost-monitor-setup.sh
+./gost-monitor-setup.sh
