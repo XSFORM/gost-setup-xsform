@@ -1,7 +1,7 @@
-### Мониторинг TM IP и Telegram
+## Установка gost и Telegram-пинг-бота
 
-Скачайте и запустите установщик:
 ```bash
-wget https://raw.githubusercontent.com/XSFORM/gost-setup-xsform/main/gost-monitor-setup.sh
-chmod +x gost-monitor-setup.sh
-./gost-monitor-setup.sh
+wget https://raw.githubusercontent.com/XSFORM/gost-setup-xsform/main/install_gost_pingbot.sh
+chmod +x install_gost_pingbot.sh
+sudo ./install_gost_pingbot.sh
+```
