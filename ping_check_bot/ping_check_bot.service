@@ -1,0 +1,13 @@
+[Unit]
+Description=Ping Check Telegram Bot
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/gost-setup-xsform/ping_check_bot
+ExecStart=/usr/bin/python3 /opt/gost-setup-xsform/ping_check_bot/ping_check_bot.py
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
