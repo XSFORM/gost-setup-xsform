@@ -33,5 +33,5 @@ sudo ./gost-setup-xsform.sh
 
 ## Обратная связь
 
-Автор: [XSFORM](https://t.me/XSFORM)  
-Telegram-канал: https://t.me/XSFORM
+Автор: [XSFORM](https://t.me/XS_FORM)  
+Telegram-канал: https://t.me/XS_FORM
